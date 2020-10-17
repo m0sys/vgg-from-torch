@@ -14,8 +14,10 @@ class _Vgg(BaseModel):
         self.conv_layers = conv_layers
 
         self.fc_layers = nn.Sequential(
+            nn.Dropout(),
             nn.Linear(512, 512),
             nn.ReLU(inplace=True),
+            nn.Dropout(),
             nn.Linear(512, 512),
             nn.ReLU(inplace=True),
             nn.Linear(512, num_classes),
