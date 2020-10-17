@@ -46,16 +46,37 @@ class DefaultCifar100DataLoader(BaseDataLoader):
     def __init__(self, data_dir, batch_size, shuffle=True, validation_split=0.0, num_workers=1, training=True):
 
         normalize = transforms.Normalize(
-            mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+            mean=[0.507, 0.487, 0.441], std=[0.267, 0.256, 0.276])
 
         trsfm = transforms.Compose([
-            transforms.RandomCrop(32, padding=4),
-            transforms.RandomHorizontalFlip(),
+            ## transforms.RandomCrop(32, padding=4),
+            ## transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             normalize
         ])
 
         self.data_dir = data_dir
         self.dataset = datasets.CIFAR100(
+            self.data_dir, train=training, download=True, transform=trsfm)
+        super().__init__(self.dataset, batch_size, shuffle, validation_split, num_workers)
+
+
+class DefaultCifar10DataLoader(BaseDataLoader):
+    """Default size for Cifar10 images with train/split."""
+
+    def __init__(self, data_dir, batch_size, shuffle=True, validation_split=0.0, num_workers=1, training=True):
+
+        normalize = transforms.Normalize(
+            mean=[0.491, 0.482, 0.447], std=[0.247, 0.243, 0.262])
+
+        trsfm = transforms.Compose([
+            ## transforms.RandomCrop(32, padding=4),
+            ## transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            normalize
+        ])
+
+        self.data_dir = data_dir
+        self.dataset = datasets.CIFAR10(
             self.data_dir, train=training, download=True, transform=trsfm)
         super().__init__(self.dataset, batch_size, shuffle, validation_split, num_workers)

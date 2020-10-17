@@ -2,11 +2,11 @@
   "name": "Cifar100_Vgg19",
   "n_gpu": 1,
   "arch": {
-    "type": "Vgg19",
+    "type": "Vgg11",
     "args": {}
   },
   "data_loader": {
-    "type": "DefaultCifar100DataLoader",
+    "type": "DefaultCifar10DataLoader",
     "args": {
       "data_dir": "data/",
       "batch_size": 32,
@@ -18,7 +18,7 @@
   "optimizer": {
     "type": "Adam",
     "args": {
-      "lr": 0.01,
+      "lr": 0.001,
       "weight_decay": 0,
       "amsgrad": false
     }
