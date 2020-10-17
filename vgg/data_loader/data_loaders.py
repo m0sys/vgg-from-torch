@@ -115,14 +115,23 @@ class DefaultCifar10DataLoader(BaseDataLoader):
             mean=[0.491, 0.482, 0.447], std=[0.247, 0.243, 0.262]
         )
 
-        trsfm = transforms.Compose(
-            [
-                ## transforms.RandomCrop(32, padding=4),
-                ## transforms.RandomHorizontalFlip(),
-                transforms.ToTensor(),
-                normalize,
-            ]
-        )
+        if training:
+            trsfm = transforms.Compose(
+                [
+                    transforms.RandomCrop(32, padding=4),
+                    transforms.RandomHorizontalFlip(),
+                    transforms.ToTensor(),
+                    normalize,
+                ]
+            )
+
+        else:
+            trsfm = transforms.Compose(
+                [
+                    transforms.ToTensor(),
+                    normalize,
+                ]
+            )
 
         self.data_dir = data_dir
         self.dataset = datasets.CIFAR10(

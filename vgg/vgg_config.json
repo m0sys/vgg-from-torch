@@ -1,5 +1,5 @@
 {
-  "name": "Cifar100_Vgg19",
+  "name": "DefaultCifar10_Vgg11",
   "n_gpu": 1,
   "arch": {
     "type": "Vgg11",
