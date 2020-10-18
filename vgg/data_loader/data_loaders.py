@@ -4,13 +4,10 @@ from torchvision import datasets, transforms
 from vgg.base import BaseDataLoader
 from PIL import Image
 
-CIFAR_100_NORMALIZE = transforms.Normalize(
-    mean=[0.507, 0.487, 0.441], std=[0.267, 0.256, 0.276]
-)
-
-CIFAR_10_NORMALIZE = transforms.Normalize(
-    mean=[0.491, 0.482, 0.447], std=[0.247, 0.243, 0.262]
-)
+CIFAR_100_MEAN = [0.507, 0.487, 0.441]
+CIFAR_100_STD = [0.267, 0.256, 0.276]
+CIFAR_10_MEAN = [0.491, 0.482, 0.447]
+CIFAR_10_STD = [0.247, 0.243, 0.262]
 
 
 class MnistDataLoader(BaseDataLoader):
@@ -54,7 +51,9 @@ class Cifar100DataLoader(BaseDataLoader):
         training=True,
     ):
 
-        trsfm = _apply_cifar_trsfm(training, CIFAR_100_NORMALIZE)
+        trsfm = _apply_cifar_trsfm(
+            training, _create_cifar_normalization(CIFAR_100_MEAN, CIFAR_100_STD)
+        )
 
         self.data_dir = data_dir
         self.dataset = datasets.CIFAR100(
@@ -63,6 +62,10 @@ class Cifar100DataLoader(BaseDataLoader):
         super().__init__(
             self.dataset, batch_size, shuffle, validation_split, num_workers
         )
+
+
+def _create_cifar_normalization(mean, std):
+    return transforms.Normalize(mean=mean, std=std)
 
 
 def _apply_cifar_trsfm(training: bool, normalize: transforms.Normalize):
@@ -84,6 +87,7 @@ def _apply_cifar_trsfm(training: bool, normalize: transforms.Normalize):
                 normalize,
             ]
         )
+    return trsfm
 
 
 class DefaultCifar10DataLoader(BaseDataLoader):
@@ -99,7 +103,9 @@ class DefaultCifar10DataLoader(BaseDataLoader):
         training=True,
     ):
 
-        trsfm = _apply_cifar_default_trsfm(training, CIFAR_10_NORMALIZE)
+        trsfm = _apply_cifar_default_trsfm(
+            training, _create_cifar_normalization(CIFAR_10_MEAN, CIFAR_10_STD)
+        )
 
         self.data_dir = data_dir
         self.dataset = datasets.CIFAR10(
@@ -128,6 +134,7 @@ def _apply_cifar_default_trsfm(training: bool, normalize: transforms.Normalize):
                 normalize,
             ]
         )
+    return trsfm
 
 
 class DefaultCifar100DataLoader(BaseDataLoader):
@@ -143,7 +150,9 @@ class DefaultCifar100DataLoader(BaseDataLoader):
         training=True,
     ):
 
-        trsfm = _apply_cifar_default_trsfm(training, CIFAR_100_NORMALIZE)
+        trsfm = _apply_cifar_default_trsfm(
+            training, _create_cifar_normalization(CIFAR_100_MEAN, CIFAR_100_STD)
+        )
 
         self.data_dir = data_dir
         self.dataset = datasets.CIFAR100(
