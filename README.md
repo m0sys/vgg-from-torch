@@ -25,7 +25,7 @@ conda env create -f environment.yml
 - Reached Similar result on Cifar10 dataset using Vgg13.
 - Deeper models do not converge to a good loss.
 
-See [assets](https://github.com/mhd53/vgg-from-torch/_asserts) for graphs.
+See [assets](https://github.com/mhd53/vgg-from-torch/tree/main/_assets) for graphs.
 
 ## TODO
 
