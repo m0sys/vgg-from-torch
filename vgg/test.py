@@ -1,11 +1,11 @@
 import argparse
 import torch
 from tqdm import tqdm
-import data_loader.data_loaders as module_data
-import model.loss as module_loss
-import model.metric as module_metric
-import model.model as module_arch
-from parse_config import ConfigParser
+import vgg.data_loader.data_loaders as module_data
+import vgg.model.loss as module_loss
+import vgg.model.metric as module_metric
+import vgg.model.model as module_arch
+from vgg.parse_config import ConfigParser
 
 
 def main(config):
