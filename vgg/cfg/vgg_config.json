@@ -1,12 +1,15 @@
 {
-  "name": "DefaultCifar10_Vgg11",
+  "name": "Cifar10_Vgg11",
   "n_gpu": 1,
   "arch": {
     "type": "Vgg11",
-    "args": {}
+    "args": {
+      "num_classes": 10,
+      "default": false
+    }
   },
   "data_loader": {
-    "type": "DefaultCifar10DataLoader",
+    "type": "Cifar10DataLoader",
     "args": {
       "data_dir": "data/",
       "batch_size": 32,
@@ -35,7 +38,7 @@
     }
   },
   "trainer": {
-    "epochs": 50,
+    "epochs": 30,
     "save_dir": "saved/",
     "save_period": 1,
     "verbosity": 2,

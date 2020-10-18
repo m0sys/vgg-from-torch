@@ -8,19 +8,22 @@ from vgg.base import BaseModel
 
 
 class _Vgg(BaseModel):
-    def __init__(self, conv_layers, num_classes=100):
+    def __init__(self, conv_layers, num_classes=100, default=True):
         super().__init__()
 
         self.conv_layers = conv_layers
 
+        fc_units = 512 if default else 4096
+        num_flatten_params = 512 * 1 * 1 if default else 512 * 7 * 7
+
         self.fc_layers = nn.Sequential(
             nn.Dropout(),
-            nn.Linear(512, 512),
+            nn.Linear(num_flatten_params, fc_units),
             nn.ReLU(inplace=True),
             nn.Dropout(),
-            nn.Linear(512, 512),
+            nn.Linear(fc_units, fc_units),
             nn.ReLU(inplace=True),
-            nn.Linear(512, num_classes),
+            nn.Linear(fc_units, num_classes),
         )
 
     def forward(self, x):
@@ -34,25 +37,27 @@ def _flatten(x):
 
 
 class Vgg11(_Vgg):
-    def __init__(self, num_classes=100):
+    def __init__(self, num_classes=100, default=True):
         conv_layers = _build_layers(_vgg_cfg["A"])
-        super().__init__(conv_layers=conv_layers, num_classes=num_classes)
+        super().__init__(
+            conv_layers=conv_layers, num_classes=num_classes, default=default
+        )
 
 
 class Vgg13(_Vgg):
-    def __init__(self, num_classes=100):
+    def __init__(self, num_classes=100, default=True):
         conv_layers = _build_layers(_vgg_cfg["B"])
         super().__init__(conv_layers=conv_layers, num_classes=num_classes)
 
 
 class Vgg16(_Vgg):
-    def __init__(self, num_classes=100):
+    def __init__(self, num_classes=100, default=True):
         conv_layers = _build_layers(_vgg_cfg["D"])
         super().__init__(conv_layers=conv_layers, num_classes=num_classes)
 
 
 class Vgg19(_Vgg):
-    def __init__(self, num_classes=100):
+    def __init__(self, num_classes=100, default=True):
         conv_layers = _build_layers(_vgg_cfg["E"])
         super().__init__(conv_layers=conv_layers, num_classes=num_classes)
 

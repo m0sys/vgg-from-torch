@@ -10,32 +10,6 @@ CIFAR_10_MEAN = [0.491, 0.482, 0.447]
 CIFAR_10_STD = [0.247, 0.243, 0.262]
 
 
-class MnistDataLoader(BaseDataLoader):
-    """
-    MNIST data loading demo using BaseDataLoader
-    """
-
-    def __init__(
-        self,
-        data_dir,
-        batch_size,
-        shuffle=True,
-        validation_split=0.0,
-        num_workers=1,
-        training=True,
-    ):
-        trsfm = transforms.Compose(
-            [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
-        )
-        self.data_dir = data_dir
-        self.dataset = datasets.MNIST(
-            self.data_dir, train=training, download=True, transform=trsfm
-        )
-        super().__init__(
-            self.dataset, batch_size, shuffle, validation_split, num_workers
-        )
-
-
 class Cifar100DataLoader(BaseDataLoader):
     """
     CIFAR100 dataloader with train/val split.
@@ -88,6 +62,34 @@ def _apply_cifar_trsfm(training: bool, normalize: transforms.Normalize):
             ]
         )
     return trsfm
+
+
+class Cifar10DataLoader(BaseDataLoader):
+    """
+    CIFAR100 dataloader with train/val split.
+    """
+
+    def __init__(
+        self,
+        data_dir,
+        batch_size,
+        shuffle=True,
+        validation_split=0.0,
+        num_workers=1,
+        training=True,
+    ):
+
+        trsfm = _apply_cifar_trsfm(
+            training, _create_cifar_normalization(CIFAR_10_MEAN, CIFAR_10_STD)
+        )
+
+        self.data_dir = data_dir
+        self.dataset = datasets.CIFAR10(
+            self.data_dir, train=training, download=True, transform=trsfm
+        )
+        super().__init__(
+            self.dataset, batch_size, shuffle, validation_split, num_workers
+        )
 
 
 class DefaultCifar10DataLoader(BaseDataLoader):
@@ -156,6 +158,32 @@ class DefaultCifar100DataLoader(BaseDataLoader):
 
         self.data_dir = data_dir
         self.dataset = datasets.CIFAR100(
+            self.data_dir, train=training, download=True, transform=trsfm
+        )
+        super().__init__(
+            self.dataset, batch_size, shuffle, validation_split, num_workers
+        )
+
+
+class MnistDataLoader(BaseDataLoader):
+    """
+    MNIST data loading demo using BaseDataLoader
+    """
+
+    def __init__(
+        self,
+        data_dir,
+        batch_size,
+        shuffle=True,
+        validation_split=0.0,
+        num_workers=1,
+        training=True,
+    ):
+        trsfm = transforms.Compose(
+            [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
+        )
+        self.data_dir = data_dir
+        self.dataset = datasets.MNIST(
             self.data_dir, train=training, download=True, transform=trsfm
         )
         super().__init__(
